@@ -14,7 +14,7 @@
 }
 else
 {
-    <div class="card shadow border-0 mt-4">
+    <div class="card shadow border-0 m-4">
         <div class="card-header bg-black bg-gradient m-lg-0 py-3">
             <div class="row">
                 <div class="col-12 text-center">
@@ -36,7 +36,7 @@ else
                         <div class="col-6 col-md-3">
                             <button type="submit" class="btn btn-primary form-control" disabled="@IsProcessing">
                                 <i class="bi bi-floppy2-fill"></i>
-                                Update
+                                @(Id > 0 ? "Update" : "Create")
                             </button>
                         </div>
                         <div class="col-6 col-md-3">
