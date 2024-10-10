@@ -4,6 +4,8 @@
 @using Microsoft.AspNetCore.Authorization
 @inject AuthenticationStateProvider _authenticationStateProvider
 @inject ICartRepository _cartRepository
+@inject IOrderRepository _orderRepository
+@inject NavigationManager _navigationManager
 
 @attribute [Authorize]
 
@@ -164,7 +166,7 @@ else
 
 	private async Task LoadCart()
 	{
-		
+
 		Carts = await _cartRepository.GetAllAsync(OrderHeader.UserId);
 		OrderHeader.OrderTotal = 0;
 		TotalItems = 0;
@@ -178,7 +180,7 @@ else
 
 	private async Task UpdateCartItem(int productId, int updateBy)
 	{
-	
+
 		var result = await _cartRepository.UpdateCartAsync(OrderHeader.UserId, productId, updateBy);
 
 		await LoadCart();
@@ -186,7 +188,13 @@ else
 	}
 	private async Task ProcessOrderCreation()
 	{
-		
+		IsProcessing = true;
+		await Task.Yield();
+		OrderHeader.OrderDetails = SD.ConvertCartListToOrderDetails(Carts.ToList());
+
+		await _orderRepository.CreateAsync(OrderHeader);
+		_navigationManager.NavigateTo($"/order/confirmation/{OrderHeader.Id}");
+
 	}
 
 }
