@@ -7,6 +7,7 @@ using YumBlazor.Components.Account;
 using YumBlazor.Data;
 using YumBlazor.Repository;
 using YumBlazor.Repository.IRepository;
+using YumBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-
+builder.Services.AddSingleton<SharedStateService>();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -31,6 +32,20 @@ builder.Services.AddAuthentication(options =>
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
+    .AddFacebook(options=>
+    {
+        IConfigurationSection Facebook=
+        builder.Configuration.GetSection("Facebook");
+        options.AppId =Facebook["AppId"];
+        options.AppSecret = Facebook["AppSecret"];
+    })
+     .AddMicrosoftAccount(options =>
+     {
+         IConfigurationSection MicrosoftAccount =
+         builder.Configuration.GetSection("MicrosoftAccount");
+         options.ClientId = MicrosoftAccount["ClientId"];
+         options.ClientSecret = MicrosoftAccount["ClientSecret"];
+     })
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

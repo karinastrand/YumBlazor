@@ -9,4 +9,6 @@ public interface ICartRepository
     public Task<IEnumerable<Cart>> GetAllAsync(string? userId);
     public Task<bool> ClearCartAsync(string? userId);
 
+    public Task<int> GetTotalCartCountAsync(string? userId);    
+
 }

@@ -25,44 +25,33 @@ else
         </div>
         <div class="card-body p-4">
            
-            @if (OrderHeaders.Any())
-            {
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Order Totla</th>
-                            <th>Order Date</th>
-                            <th>Order Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var order in OrderHeaders)
-                        {
-                            <tr>
-                                <td>@order.Id</td>
-                                <td>@order.Name</td>
-                                <td>@order.PhoneNumber</td>
-                                <td>@order.Email</td>
-                                <td>@order.OrderTotal</td>
-                                <td>@order.OrderDate</td>
-                                <td>@order.Status</td>
-                                <td>
-                                    <a href="@($"order/details/{order.Id}")" class="btn btn-primary">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Details
-                                    </a>
-                                    
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
+        @if (OrderHeaders.Any())
+        {
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" 
+            AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@OrderHeaders" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or" SelectionMode="DataGridSelectionMode.Single">
+                <Columns>
+                    <RadzenDataGridColumn Property="Id" Filterable="true" Title="ID" Frozen="true" Width="80px"  /> 
+                    <RadzenDataGridColumn Property="Name" Title="Name" Frozen="true" Width="120px" />
+                    <RadzenDataGridColumn Property="@nameof(OrderHeader.PhoneNumber)" Title="Phone" Width="120px" />
+                    <RadzenDataGridColumn Property="@nameof(OrderHeader.Email)" Title="Email" Width="200px" />
+                    <RadzenDataGridColumn Property="@nameof(OrderHeader.OrderTotal)" Title="Order Total" FormatString="{0:C}" Width="120px" />
+                    <RadzenDataGridColumn Property="@nameof(OrderHeader.OrderDate)" Title="Order Date" FormatString="{0:d}" Width="120px" />
+                    <RadzenDataGridColumn Property="@nameof(OrderHeader.Status)" Title="Order Status" Width="160px" />
+
+                    <RadzenDataGridColumn Title="Action" Frozen="false" Sortable="false" Filterable="false" Width="80px" TextAlign="TextAlign.Center">
+                        <Template Context="orderHeader">
+                            <RadzenButton Shate="Shade.Lighter" Text="Details" ButtonStyle="ButtonStyle.Primary"
+                            Click="@(()=>_navigationManager.NavigateTo($"order/details/{orderHeader.Id}"))"></RadzenButton>
+                        </Template>
+                    </RadzenDataGridColumn>
+       
+                </Columns>
+            </RadzenDataGrid>
+
+
+             
+        }
         </div>
     </div>
 
