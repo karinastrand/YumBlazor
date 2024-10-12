@@ -46,7 +46,15 @@ builder.Services.AddAuthentication(options =>
          options.ClientId = MicrosoftAccount["ClientId"];
          options.ClientSecret = MicrosoftAccount["ClientSecret"];
      })
-    .AddIdentityCookies();
+   
+     .AddGoogle(options =>
+      {
+          IConfigurationSection Google =
+          builder.Configuration.GetSection("Google");
+          options.ClientId = Google["ClientId"];
+          options.ClientSecret = Google["ClientSecret"];
+      })
+        .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
