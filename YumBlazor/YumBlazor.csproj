@@ -17,6 +17,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-rc.1.24451.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-rc.1.24451.1" />
     <PackageReference Include="Radzen.Blazor" Version="5.2.11" />
+    <PackageReference Include="Stripe.net" Version="46.2.0" />
   </ItemGroup>
 
   <ItemGroup>
